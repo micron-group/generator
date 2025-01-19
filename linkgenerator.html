@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dynamic Link Generator</title>
+  <script>
+    let generatedLink = "";
+
+    // Function to generate the new link and show it on the second button
+    function generateLink() {
+      // URLs provided by the user
+      const firstLink = document.getElementById("firstLink").value;
+      const secondLink = document.getElementById("secondLink").value;
+
+      if (!firstLink || !secondLink) {
+        alert("Please provide both links.");
+        return;
+      }
+
+      // Generate the new link
+      generatedLink = `${secondLink}/example`;
+
+      // Display the generated link on the second button
+      document.getElementById("openLinkButton").textContent = `Open ${generatedLink}`;
+
+      // Enable the second button
+      document.getElementById("openLinkButton").disabled = false;
+    }
+
+    // Function to open the generated link in a new tab
+    function openLink() {
+      if (generatedLink) {
+        // Open the new link in a new tab
+        window.open(generatedLink, "_blank");
+
+        // Reload the first link in the background (iframe)
+        const iframe = document.getElementById("backgroundIframe");
+        iframe.src = document.getElementById("firstLink").value;
+        iframe.style.display = "block"; // Show the iframe
+      }
+    }
+  </script>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      padding: 20px;
+    }
+    #backgroundIframe {
+      display: none; /* Initially hidden */
+      width: 100%;
+      height: 500px;
+      border: none;
+      margin-top: 20px;
+    }
+  </style>
+</head>
+<body>
+  <h1>Dynamic Link Generator</h1>
+  <p>Provide two links to generate a new one:</p>
+  <div>
+    <label for="firstLink">First Link (Background): </label>
+    <input type="text" id="firstLink" placeholder="Enter the first link (e.g., github.com)" size="50"><br><br>
+    
+    <label for="secondLink">Second Link (Base): </label>
+    <input type="text" id="secondLink" placeholder="Enter the second link (e.g., researchwings.com)" size="50"><br><br>
+    
+    <button onclick="generateLink()">Generate Link</button><br><br>
+    
+    <!-- The second button will open the generated link -->
+    <button id="openLinkButton" onclick="openLink()" disabled>Open Link</button>
+  </div>
+
+  <!-- Iframe to reload the first link -->
+  <iframe id="backgroundIframe"></iframe>
+</body>
+</html>
